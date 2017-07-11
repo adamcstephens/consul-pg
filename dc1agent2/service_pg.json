@@ -1,0 +1,23 @@
+{
+  "service": {
+    "checks": [
+      {
+        "interval": "10s",
+        "name": "pg_role check",
+        "script": "/usr/local/bin/consul_check_postgres.py pgcluster"
+      },
+      {
+        "interval": "3s",
+        "name": "postgresql tcp",
+        "tcp": "dc1db2:5432"
+      }
+    ],
+    "enableTagOverride": false,
+    "id": "pgcluster",
+    "name": "pgcluster",
+    "port": 5432,
+    "tags": [
+      "dc1"
+    ]
+  }
+}

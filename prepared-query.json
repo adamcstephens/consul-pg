@@ -1,0 +1,17 @@
+{
+  "Name": "pg",
+  "Template": {
+    "Type": "name_prefix_match",
+    "Regexp": "^pg-(.*)-(.*)$"
+  },
+  "Service": {
+    "Service": "${match(1)}",
+    "Failover": {
+      "NearestN": 3
+    },
+    "OnlyPassing": true,
+    "Tags": [
+      "${match(2)}"
+    ]
+  }
+}

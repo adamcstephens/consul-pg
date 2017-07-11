@@ -1,0 +1,142 @@
+version: '2'
+services:
+  dc1consul:
+    image: consul:0.7.5
+    command: 
+      - "agent"
+      - "-server"
+      - "-client"
+      - "0.0.0.0"
+      - "-ui"
+      - "-bind"
+      - "0.0.0.0"
+      - "-datacenter"
+      - "dc1"
+      - "-join-wan"
+      - "172.25.2.101"
+      - "-bootstrap"
+    networks:
+      datacenter:
+        ipv4_address: 172.25.0.101
+    ports:
+      - 8500:8500
+      - 8600:8600/tcp
+      - 8600:8600/udp
+    restart: unless-stopped
+
+  dc2consul:
+    image: consul:0.7.5
+    command:
+      - "agent"
+      - "-server"
+      - "-client"
+      - "0.0.0.0"
+      - "-ui"
+      - "-bind"
+      - "0.0.0.0"
+      - "-datacenter"
+      - "dc2"
+      - "-join-wan"
+      - "172.25.0.101"
+      - "-bootstrap"
+    networks:
+      datacenter:
+        ipv4_address: 172.25.2.101
+    ports:
+      - 18500:8500
+      - 18600:8600/tcp
+      - 18600:8600/udp
+    restart: unless-stopped
+
+  dc1db1:
+    image: postgres:9-alpine
+    networks:
+      - datacenter
+    restart: unless-stopped
+
+  dc1agent1:
+    build: .
+    image: pg-consulagent:latest
+    command:
+      - "agent"
+      - "-client"
+      - "0.0.0.0"
+      - "-bind"
+      - "0.0.0.0"
+      - "-join"
+      - "172.25.0.101"
+      - "-datacenter"
+      - "dc1"
+    depends_on:
+      - dc1db1
+    networks:
+      datacenter:
+        ipv4_address: 172.25.0.151
+    volumes:
+      - ./dc1agent1:/consul/config
+      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py
+    restart: unless-stopped
+
+  dc1db2:
+    image: postgres:9-alpine
+    networks:
+      - datacenter
+    restart: unless-stopped
+
+  dc1agent2:
+    build: .
+    image: pg-consulagent:latest
+    command:
+      - "agent"
+      - "-client"
+      - "0.0.0.0"
+      - "-bind"
+      - "0.0.0.0"
+      - "-join"
+      - "172.25.0.101"
+      - "-datacenter"
+      - "dc1"
+    depends_on:
+      - dc1db1
+    networks:
+      datacenter:
+        ipv4_address: 172.25.0.152
+    volumes:
+      - ./dc1agent2:/consul/config
+      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py
+    restart: unless-stopped
+
+  dc2db1:
+    image: postgres:9-alpine
+    networks:
+      - datacenter
+    restart: unless-stopped
+
+  dc2agent1:
+    build: .
+    image: pg-consulagent:latest
+    command:
+      - "agent"
+      - "-client"
+      - "0.0.0.0"
+      - "-bind"
+      - "0.0.0.0"
+      - "-join"
+      - "172.25.2.101"
+      - "-datacenter"
+      - "dc2"
+    depends_on:
+      - dc2db1
+    networks:
+      datacenter:
+        ipv4_address: 172.25.2.151
+    volumes:
+      - ./dc2agent1:/consul/config
+      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py
+    restart: unless-stopped
+
+networks:
+  datacenter:
+    ipam:
+        config:
+        - subnet: 172.25.0.0/16
