@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CONSUL_HOST="$(docker-machine ip)"
+CONSUL_HOST="127.0.0.1"
 
 echo "Adding query to dc1"
 curl --request POST --data @prepared-query.json --silent http://$CONSUL_HOST:8500/v1/query

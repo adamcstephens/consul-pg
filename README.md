@@ -4,7 +4,7 @@ This is a docker-based environment for demoing a multi-datacenter PostgreSQL ser
 
 # Prequisites
 
-This assumes you're using _docker-machine_ and have utilities such as _curl_, _dig_ and _jq_ in your path.
+This assumes you're using docker for mac and have utilities such as _curl_, _dig_ and _jq_ in your path. If you're not on docker for mac, modify the _CONSUL_HOST_ variables.
 
 # Start up
 

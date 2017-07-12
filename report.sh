@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CONSUL_HOST="$(docker-machine ip)"
+CONSUL_HOST="127.0.0.1"
 
 echo ":: dc1 pg service"
 dig +short pgcluster.service.dc1.consul @$CONSUL_HOST -p 8600
