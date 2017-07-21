@@ -14,3 +14,7 @@ docker-compose up -d
 ./bootstrap.sh
 ./report.sh
 ```
+
+# Architecture
+
+![Consul PG Architecture](Consul_postgres_failover_design.png)
