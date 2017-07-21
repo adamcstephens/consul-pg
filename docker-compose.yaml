@@ -74,7 +74,7 @@ services:
         ipv4_address: 172.25.0.151
     volumes:
       - ./dc1agent1:/consul/config
-      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py
+      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py:ro
     restart: unless-stopped
 
   dc1db2:
@@ -103,7 +103,7 @@ services:
         ipv4_address: 172.25.0.152
     volumes:
       - ./dc1agent2:/consul/config
-      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py
+      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py:ro
     restart: unless-stopped
 
   dc2db1:
@@ -132,7 +132,7 @@ services:
         ipv4_address: 172.25.2.151
     volumes:
       - ./dc2agent1:/consul/config
-      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py
+      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py:ro
     restart: unless-stopped
 
 networks:

@@ -86,7 +86,7 @@ class ConsulPostgreSQL:
                 if leader_session_id and leader_session_id != self.session_id:
                     leader_node = self.current_leader_session_info(leader_session_id)
 
-                    if 'pagerduty_service_key' not in self.config:
+                    if 'pagerduty_service_key' in self.config:
                         self.trigger_pagerduty_multimaster(leader_node)
 
                     raise Exception('!! leader is already locked by node: ' + leader_node)
