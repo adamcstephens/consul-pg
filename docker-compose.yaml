@@ -15,6 +15,7 @@ services:
       - "-join-wan"
       - "172.25.2.101"
       - "-bootstrap"
+    hostname: dc1consul
     networks:
       datacenter:
         ipv4_address: 172.25.0.101
@@ -39,6 +40,7 @@ services:
       - "-join-wan"
       - "172.25.0.101"
       - "-bootstrap"
+    hostname: dc2consul
     networks:
       datacenter:
         ipv4_address: 172.25.2.101
@@ -50,12 +52,14 @@ services:
 
   dc1db1:
     image: postgres:9-alpine
+    hostname: dc1db1
     networks:
       - datacenter
     restart: unless-stopped
 
   dc1agent1:
-    build: .
+    build:
+      context: agent
     image: pg-consulagent:latest
     command:
       - "agent"
@@ -67,24 +71,24 @@ services:
       - "172.25.0.101"
       - "-datacenter"
       - "dc1"
-    depends_on:
-      - dc1db1
+    links:
+      - dc1db1:db
+    hostname: dc1agent1
     networks:
       datacenter:
         ipv4_address: 172.25.0.151
-    volumes:
-      - ./dc1agent1:/consul/config
-      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py:ro
     restart: unless-stopped
 
   dc1db2:
     image: postgres:9-alpine
+    hostname: dc1db2
     networks:
       - datacenter
     restart: unless-stopped
 
   dc1agent2:
-    build: .
+    build:
+      context: agent
     image: pg-consulagent:latest
     command:
       - "agent"
@@ -96,24 +100,24 @@ services:
       - "172.25.0.101"
       - "-datacenter"
       - "dc1"
-    depends_on:
-      - dc1db1
+    links:
+      - dc1db2:db
+    hostname: dc1agent2
     networks:
       datacenter:
         ipv4_address: 172.25.0.152
-    volumes:
-      - ./dc1agent2:/consul/config
-      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py:ro
     restart: unless-stopped
 
   dc2db1:
     image: postgres:9-alpine
+    hostname: dc2db1
     networks:
       - datacenter
     restart: unless-stopped
 
   dc2agent1:
-    build: .
+    build:
+      context: agent
     image: pg-consulagent:latest
     command:
       - "agent"
@@ -125,14 +129,12 @@ services:
       - "172.25.2.101"
       - "-datacenter"
       - "dc2"
-    depends_on:
-      - dc2db1
+    links:
+      - dc2db1:db
+    hostname: dc2agent1
     networks:
       datacenter:
-        ipv4_address: 172.25.2.151
-    volumes:
-      - ./dc2agent1:/consul/config
-      - ./consul_check_postgres.py:/usr/local/bin/consul_check_postgres.py:ro
+        ipv4_address: 172.25.2.201
     restart: unless-stopped
 
 networks:

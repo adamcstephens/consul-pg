@@ -9,15 +9,12 @@
       {
         "interval": "3s",
         "name": "postgresql tcp",
-        "tcp": "dc2db1:5432"
+        "tcp": "db:5432"
       }
     ],
     "enableTagOverride": false,
     "id": "pgcluster",
     "name": "pgcluster",
-    "port": 5432,
-    "tags": [
-      "dc2"
-    ]
+    "port": 5432
   }
 }

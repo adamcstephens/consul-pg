@@ -47,6 +47,9 @@ class ConsulPostgreSQL:
             exit(135)
         self.managed_service = self.agent_services[self.service]
 
+        if self.managed_service['Tags'] == None:
+            self.managed_service['Tags'] = []
+
         if self.role_source == "facter":
             self.get_facter_state(self.DEFAULT_FACTERFILE)
         else:
