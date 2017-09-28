@@ -71,6 +71,8 @@ services:
       - "172.25.0.101"
       - "-datacenter"
       - "dc1"
+      - "-log-level"
+      - "debug"
     links:
       - dc1db1:db
     hostname: dc1agent1
@@ -100,6 +102,8 @@ services:
       - "172.25.0.101"
       - "-datacenter"
       - "dc1"
+      - "-log-level"
+      - "debug"
     links:
       - dc1db2:db
     hostname: dc1agent2
@@ -129,6 +133,8 @@ services:
       - "172.25.2.101"
       - "-datacenter"
       - "dc2"
+      - "-log-level"
+      - "debug"
     links:
       - dc2db1:db
     hostname: dc2agent1
