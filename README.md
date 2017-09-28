@@ -12,7 +12,8 @@ This assumes you're using docker for mac and have utilities such as _curl_, _dig
 docker-compose up -d
 # wait until environment is fully up
 ./bootstrap.sh
-./report.sh
+./show-services.sh
+./show-dns.sh
 ```
 
 # Architecture
